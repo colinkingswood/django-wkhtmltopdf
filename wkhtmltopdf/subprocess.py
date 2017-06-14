@@ -2,11 +2,15 @@ from __future__ import absolute_import
 
 from subprocess import *
 
+import logging
+logger = logging.getLogger('django')
+
 
 # Provide Python 2.7's check_output() function.
 try:
     check_output
 except NameError:
+    logger.warn("Name Error")
     def check_output(*popenargs, **kwargs):
         r"""Run command with arguments and return its output as a byte string.
 
@@ -29,10 +33,10 @@ except NameError:
         """
         if 'stdout' in kwargs:
             raise ValueError('stdout argument not allowed, it will be overridden.')
-        process = Popen(stdout=PIPE, stderr=PIPE,  *popenargs, **kwargs)
+        process = Popen(stdout=PIPE, stderr=STDOUT,  *popenargs, **kwargs)
         output, unused_err = process.communicate()
-        print("output:", output)
-        print("err:" , unused_err)
+        logger.warn("output:", output)
+        logger.warn("err:" , unused_err)
         retcode = process.poll()
         if retcode:
             cmd = kwargs.get("args")
