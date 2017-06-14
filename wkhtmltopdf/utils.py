@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import logging
 from copy import copy
 from itertools import chain
 import os
@@ -24,6 +25,9 @@ from django.template.context import Context, RequestContext
 from django.utils import six
 
 from .subprocess import check_output
+
+logger = logging.getLogger(__name__)
+
 
 NO_ARGUMENT_OPTIONS = ['--collate', '--no-collate', '-H', '--extended-help', '-g',
                        '--grayscale', '-h', '--help', '--htmldoc', '--license', '-l',
@@ -291,6 +295,9 @@ def make_absolute_paths(content):
 def render_to_temporary_file(template, context, request=None, mode='w+b',
                              bufsize=-1, suffix='.html', prefix='tmp',
                              dir=None, delete=True):
+    logger.warn("dir:{dir}".format(dir=dir))
+    logger.warn("prefix:{prefix}".format(prefix=prefix))
+
     if django.VERSION < (1, 8):
         # If using a version of Django prior to 1.8, ensure ``context`` is an
         # instance of ``Context``
@@ -308,21 +315,27 @@ def render_to_temporary_file(template, context, request=None, mode='w+b',
     content = smart_text(content)
     content = make_absolute_paths(content)
 
+    logger.warn('content: {content}'.format(content=content))
     try:
+        logger.warn('Python 2 try')
+
         # Python3 has 'buffering' arg instead of 'bufsize'
         tempfile = NamedTemporaryFile(mode=mode, buffering=bufsize,
                                       suffix=suffix, prefix=prefix,
                                       dir=dir, delete=delete)
     except TypeError:
+        logger.warn('Python 2 try')
         tempfile = NamedTemporaryFile(mode=mode, bufsize=bufsize,
                                       suffix=suffix, prefix=prefix,
                                       dir=dir, delete=delete)
 
     try:
+        logger.warn("About to write temp file")
         tempfile.write(content.encode('utf-8'))
         tempfile.flush()
         return tempfile
-    except:
+    except Exception as e:
         # Clean-up tempfile if an Exception is raised.
+        logger.error(e)
         tempfile.close()
         raise
