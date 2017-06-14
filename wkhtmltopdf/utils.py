@@ -147,7 +147,13 @@ def wkhtmltopdf(pages, output=None, **kwargs):
     logger.info('**ck_kwargs')
     logger.info(ck_kwargs)
 
-    return check_output(ck_args, **ck_kwargs)
+    try:
+        result = check_output(ck_args, **ck_kwargs)
+        return result
+    except Exception as e:
+        logger.error("CalledProcessError?")
+        logger.error(e.output)
+
 
 def convert_to_pdf(filename, header_filename=None, footer_filename=None, cmd_options=None):
     # Clobber header_html and footer_html only if filenames are
