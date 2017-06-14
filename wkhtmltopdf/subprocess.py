@@ -29,7 +29,7 @@ except NameError:
         """
         if 'stdout' in kwargs:
             raise ValueError('stdout argument not allowed, it will be overridden.')
-        process = Popen(stdout=PIPE, *popenargs, **kwargs)
+        process = Popen(stdout=PIPE, stderr=PIPE,  *popenargs, **kwargs)
         output, unused_err = process.communicate()
         retcode = process.poll()
         if retcode:

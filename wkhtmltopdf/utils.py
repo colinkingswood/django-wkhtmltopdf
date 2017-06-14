@@ -321,14 +321,14 @@ def render_to_temporary_file(template, context, request=None, mode='w+b',
 
 #    logger.warn('content: {content}'.format(content=content))
     try:
-        logger.warn('Python 2 try')
+        logger.warn('Python 3 try')
 
         # Python3 has 'buffering' arg instead of 'bufsize'
         tempfile = NamedTemporaryFile(mode=mode, buffering=bufsize,
                                       suffix=suffix, prefix=prefix,
                                       dir=dir, delete=delete)
     except TypeError:
-        logger.warn('Python 3 try')
+        logger.warn('Python 2 try')
         tempfile = NamedTemporaryFile(mode=mode, bufsize=bufsize,
                                       suffix=suffix, prefix=prefix,
                                       dir=dir, delete=delete)
