@@ -142,6 +142,10 @@ def wkhtmltopdf(pages, output=None, **kwargs):
     except (AttributeError, IOError):
         # can't call fileno() on mod_wsgi stderr object
         pass
+    logger.info('ck_args')
+    logger.info(ck_args)
+    logger.info('**ck_kwargs')
+    logger.info(ck_kwargs)
 
     return check_output(ck_args, **ck_kwargs)
 
