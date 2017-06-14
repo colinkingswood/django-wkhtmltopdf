@@ -315,7 +315,7 @@ def render_to_temporary_file(template, context, request=None, mode='w+b',
     content = smart_text(content)
     content = make_absolute_paths(content)
 
-    logger.warn('content: {content}'.format(content=content))
+#    logger.warn('content: {content}'.format(content=content))
     try:
         logger.warn('Python 2 try')
 
@@ -324,7 +324,7 @@ def render_to_temporary_file(template, context, request=None, mode='w+b',
                                       suffix=suffix, prefix=prefix,
                                       dir=dir, delete=delete)
     except TypeError:
-        logger.warn('Python 2 try')
+        logger.warn('Python 3 try')
         tempfile = NamedTemporaryFile(mode=mode, bufsize=bufsize,
                                       suffix=suffix, prefix=prefix,
                                       dir=dir, delete=delete)
@@ -333,6 +333,9 @@ def render_to_temporary_file(template, context, request=None, mode='w+b',
         logger.warn("About to write temp file")
         tempfile.write(content.encode('utf-8'))
         tempfile.flush()
+        logger.info("**success writing temp file")
+        logger.info(tempfile)
+
         return tempfile
     except Exception as e:
         # Clean-up tempfile if an Exception is raised.
