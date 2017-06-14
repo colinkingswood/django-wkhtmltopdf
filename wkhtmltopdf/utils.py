@@ -26,7 +26,7 @@ from django.utils import six
 
 from .subprocess import check_output
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('django')
 
 
 NO_ARGUMENT_OPTIONS = ['--collate', '--no-collate', '-H', '--extended-help', '-g',
