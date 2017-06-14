@@ -31,6 +31,8 @@ except NameError:
             raise ValueError('stdout argument not allowed, it will be overridden.')
         process = Popen(stdout=PIPE, stderr=PIPE,  *popenargs, **kwargs)
         output, unused_err = process.communicate()
+        print("output:", output)
+        print("err:" , unused_err)
         retcode = process.poll()
         if retcode:
             cmd = kwargs.get("args")
